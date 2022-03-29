@@ -6,13 +6,18 @@ RUN apt-get update && \
     git \
     swig \
     cmake \
+    cython \
+    proj-bin \
+    proj-data \
     libssl-dev \
+    libproj-dev \
+    libgeos-dev \
     python3-dev \
     python3-pip \
     libgtest-dev \
     libgflags-dev \
     build-essential \
-    libgoogle-glog-dev
+    libgoogle-glog-dev 
 
 # Symbolic link to use python3 as default
 RUN ln -sf /usr/bin/python3 /usr/bin/python
@@ -43,13 +48,24 @@ RUN mkdir /s2geometry/build && \
     -DCMAKE_CXX_STANDARD=17 \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
     -DCMAKE_PREFIX_PATH=abseil-cpp/build/install/ \
-    -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 && \
+    -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3.6 && \
     make install
 
 ## A hack so that _pywraps2.so will recognize libs2.so 
 RUN cp /usr/local/lib/libs2.so /usr/lib/x86_64-linux-gnu
 
-RUN pip3 install jupyter
+RUN pip3 install jupyter \
+    numpy \
+    scipy \
+    pandas \
+    shapely \
+    pykdtree \
+    matplotlib \
+    ipywidgets \
+    Pillow==6.2.2
+
+RUN pip3 install Cartopy
+
 WORKDIR /usr/src/notebooks/
 COPY ./notebooks/ /usr/src/notebooks/
 
