@@ -14,7 +14,7 @@ clean: # Remove existing container with the same name
 .PHONY: run
 run: build # Build the container
 	$(MAKE) clean # Delete the existing container and run a new one
-	docker run --name ${CONTAINER} -p 8888:8888 -it ${IMAGE_NAME}
+	docker run --name ${CONTAINER} -p 8888:8888 -v $(PWD)/notebooks:/usr/src/notebooks -it ${IMAGE_NAME}
 
 .PHONY: start
 start: # Start the container
